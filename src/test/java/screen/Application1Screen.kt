@@ -43,8 +43,8 @@ object Application1Screen: TestHelper() {
     const val minAgeErrorText = "Вы должны быть старше 18 лет"
     const val maxAgeError = "//*[contains(text(), 'Вы должны быть не старше 100 лет')]"
     const val maxAgeErrorText = "Вы должны быть не старше 100 лет"
-    const val notCorrectBirth = "//*[contains(text(), 'Дата рождения некорректна')]"
-    const val notCorrectBirthText = "Дата рождения некорректна"
+    const val notCorrectBirthError = "//*[contains(text(), 'Дата рождения некорректна')]"
+    const val notCorrectBirthErrorText = "Дата рождения некорректна"
     const val maleButton = ""
     const val femaleButton = ""
     const val maleButtonName = ""
@@ -55,11 +55,6 @@ object Application1Screen: TestHelper() {
     var formatter = DateTimeFormatter.ofPattern("12-07-2005")
     var maxPeriod = Period.of(101, 0, 0)
     var minPeriod = Period.of(18, 0, 0)
-
-    const val validMinBirth = ""
-
-    const val notValidMinBirth = ""
-    const val notValidMaxBirth = ""
     const val emptyFieldErrorText = "Обязательное поле"
     val validationError = arrayOf(
             "//*[contains(text(), 'Обязательное поле')]",

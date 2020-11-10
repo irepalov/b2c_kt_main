@@ -1,12 +1,12 @@
 package core
 
-import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Condition.*
 import com.codeborne.selenide.Selectors.*
 import com.codeborne.selenide.Selenide.`$`
 import com.codeborne.selenide.conditions.ExactTextCaseSensitive
 import org.openqa.selenium.By
 import org.openqa.selenium.Keys
+import org.openqa.selenium.WebElement
 
 
 open class TestHelper: DriverSettings() {
@@ -120,14 +120,26 @@ open class TestHelper: DriverSettings() {
         `$`(By.id(id)).sendKeys(Keys.BACK_SPACE)
     }
 
-    fun pressBackSpaceTillEmpty(id) {
-        var i = 1
-        while (True) {
-            pressBackSpaceById(id)
-            i++
-
-        }
+    fun pressBackSpaceByClass(className: String) {
+        `$`(By.className(className)).sendKeys(Keys.BACK_SPACE)
     }
+
+    fun ctrlABackSpaceById(id: String) {
+        `$`(By.id(id)).sendKeys(Keys.chord(Keys.CONTROL, "a"))
+        `$`(By.id(id)).sendKeys(Keys.BACK_SPACE)
+    }
+
+
+    //fun pressBackSpaceTillDisplayedByClass (id: String, changesAttribute: String) {
+        //var elementStatus = `$`(By.id(id)).has(exactText(changesAttribute)
+        //while (!elementStatus) {
+           // pressBackSpaceById(id)++
+
+       // }
+
+   // }
+
+
 
 
                                         //\\IS DISAPPEARED\\

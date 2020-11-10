@@ -32,7 +32,7 @@ public class DriverSettings {
             driver = new FirefoxDriver();
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             System.setProperty("webdriver.gecko", "c://tools/geckodriver");
-            DriverSettings.driver.get("http://185.141.227.202");
+            DriverSettings.driver.get("");
             driver.manage().window().maximize();
         } else if (browser.toLowerCase().equals(IE)) {
             //WebDriverManager.iedriver().setup();
@@ -43,7 +43,7 @@ public class DriverSettings {
             driver = new ChromeDriver();
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             System.setProperty("webdriver.chrome", "C://Tools//chromedriver.exe");
-            DriverSettings.driver.get("http://185.141.227.202");
+            DriverSettings.driver.get("");
             driver.manage().window().maximize();
         }
     }

@@ -18,10 +18,13 @@ import screen.Application1Screen.emptyFieldError
 import screen.Application1Screen.emptyFieldErrorText
 import screen.Application1Screen.lastNameField
 import screen.Application1Screen.maxAgeError
+import screen.Application1Screen.maxAgeErrorText
 import screen.Application1Screen.midNameField
 import screen.Application1Screen.minAgeError
+import screen.Application1Screen.minAgeErrorText
 import screen.Application1Screen.nameField
-import screen.Application1Screen.notCorrectBirth
+import screen.Application1Screen.notCorrectBirthError
+import screen.Application1Screen.notCorrectBirthErrorText
 import screen.Application1Screen.symbQuantityError
 import screen.Application1Screen.symbQuantityErrorText
 import java.time.LocalDate
@@ -37,17 +40,22 @@ class ValidationTests: DriverSettings()  {
     private val valid2Symbols = "фя"
     private val notValid31Symbols = "Эй цирюльникъ ёжик выстриги дай"
     private val notValid3Spaces = "   "
+    private val notValid8Spaces = "        "
+    private val notValid7Digits = "010198"
+    private val notValid9Digits = "08.11.1920"
     private val latinSymbols = "Brick quiz whangs jumpy veldt"
     private val specSymbols = "!@#\$%^&*()_+=}[\"'|\\</?№#;,.:~`"
     private val chineseSymbols = "幸福"
     private val digitalSymbols = "1234567890"
     //private val validMaxBirth = LocalDate.plus(Application1Screen.maxPeriod)
     //private val validMinBirth = LocalDate.toString.plus(Application1Screen.minPeriod)
-    private val validMinBirth = "08.11.2002"
-    private val validMaxBirth = "08.11.2083"
-    private val validBirth = "08.11.1985"
-    private val notValidMinBirth = "08.11.2002"
-    private val notValidMaxBirth = "08.11.2083"
+    private val validMinBirth = "10.11.2002"
+    private val validMaxBirth = "10.11.1920"
+    private val validBirth = "10.11.1985"
+    private val notValidMinBirth = "11.11.2002"
+    private val notValidMaxBirth = "08.11.1920"
+
+
 
 
 
@@ -532,137 +540,138 @@ class ValidationTests: DriverSettings()  {
                             //\\КОЛИЧЕСТВО СИМВОЛОВ В ПОЛЕ ДАТА РОЖДЕНИЯ//\\
         //0. Дойти до экрана "Application 1"
         TestActions().toApplication1()
-        Thread.sleep(3000)
-        Application1Screen.pressBackSpaceTillEmpty(birthDateField)// КОСТЫЛЬ пока не проясняться требования по очистке полей после сессии
-
+        Application1Screen.ctrlABackSpaceById(birthDateField)// КОСТЫЛЬ пока не проясняться требования по очистке полей после сессии
         //Application1Screen.clickNotClickableByXpath(application1Header) // КОСТЫЛЬ
         //1. Ввести в поле "Дата рождения" значение: "08111985" (8 символов)
-        Thread.sleep(6000)
         Application1Screen.sendKeysById(birthDateField, validBirth)
-        Thread.sleep(3000)
         //Assert: символы вводятся в поле
         Application1Screen.hasEnteredTextById(birthDateField, validBirth)
         //2. Снять фокус
-
-        //Application1Screen.clickNotClickableByXpath(application1Header)
-        //Thread.sleep(3000)
+        Application1Screen.clickNotClickableByXpath(application1Header)
         //Assert: Система принимает значение. Сообщений об ошибке не появляется.
-        //Application1Screen.isNotVisibleByXpath(minAgeError)
-        //Application1Screen.isNotVisibleByXpath(maxAgeError)
-        //Application1Screen.isNotVisibleByXpath(notCorrectBirth)
+        Application1Screen.isNotVisibleByXpath(minAgeError)
+        Application1Screen.isNotVisibleByXpath(maxAgeError)
+        Application1Screen.isNotVisibleByXpath(notCorrectBirthError)
         //3. Удалить значение в поле "Дата рождения"
-        //Application1Screen.pressBackSpaceTillEmpty(birthDateField)
+        Application1Screen.ctrlABackSpaceById(birthDateField)
         //Assert: в поле не отображается никаких значений
-        //Application1Screen.isEmptyById(birthDateField)
+        Application1Screen.isEmptyById(birthDateField)
         //4. Ввести в поле "Дата рождения" значение, соответствующее максимально допустимому возрасту
-        //Application1Screen.sendKeysById(birthDateField, validMaxBirth)
-
+        Application1Screen.sendKeysById(birthDateField, validMaxBirth)
         //5.Снять фокус
-        //Application1Screen.clickNotClickableByXpath(application1Header)
+        Application1Screen.clickNotClickableByXpath(application1Header)
         //Assert: система принимает значение. Сообщений об ошибках не появляется
-        //Application1Screen.isNotVisibleByXpath(minAgeError)
-        //Application1Screen.isNotVisibleByXpath(maxAgeError)
-        //Application1Screen.isNotVisibleByXpath(notCorrectBirth)
+        Application1Screen.isNotVisibleByXpath(minAgeError)
+        Application1Screen.isNotVisibleByXpath(maxAgeError)
+        Application1Screen.isNotVisibleByXpath(notCorrectBirthError)
         //6. Очистить поле
-        //Application1Screen.pressBackSpaceTillEmpty(birthDateField)
+        Application1Screen.ctrlABackSpaceById(birthDateField)
         //Assert: в поле не отображается никаких значений
-        //Application1Screen.isEmptyById(birthDateField)
+        Application1Screen.isEmptyById(birthDateField)
         //7. Ввести в поле "Дата рождения" значение, соответствующее минимально допустимому возрасту
-        //Application1Screen.sendKeysById(birthDateField, validMinBirth)
+        Application1Screen.sendKeysById(birthDateField, validMinBirth)
         //8.Снять фокус
-        //Application1Screen.clickNotClickableByXpath(application1Header)
+        Application1Screen.clickNotClickableByXpath(application1Header)
         //Assert: система принимает значение. Сообщений об ошибках не появляется
-        //Application1Screen.isNotVisibleByXpath(minAgeError)
-        //Application1Screen.isNotVisibleByXpath(maxAgeError)
-        //Application1Screen.isNotVisibleByXpath(notCorrectBirth)
-        //9. Очистить поле
-        //Application1Screen.clearFieldById(birthDateField)
+        Application1Screen.isNotVisibleByXpath(minAgeError)
+        Application1Screen.isNotVisibleByXpath(maxAgeError)
+        Application1Screen.isNotVisibleByXpath(notCorrectBirthError)
+        //9. Очистить поле //ТУТ БАГА!!!! Поле не чиститься с помощью clear - это странно. Надо выяснить почему.
+        Application1Screen.ctrlABackSpaceById(birthDateField)
         //Assert: в поле не отображается никаких значений
-        //Application1Screen.isEmptyById(birthDateField)
+        Application1Screen.isEmptyById(birthDateField)
 
-                //НЕГАТИВНЫЕ ПРОВЕРКИ КОЛИЧЕСТВА СИМВОЛОВ В ПОЛЕ "ОТЧЕСТВО"\\Thread.sleep(3000)
-        //9. Очистить поле нажав клавишу Backspace
-        //Application1Screen.pressBackSpaceTillEmpty(birthDateField)
+                //НЕГАТИВНЫЕ ПРОВЕРКИ В ПОЛЕ "Дата рождения"\\Thread.sleep(3000)
+        //9. Очистить поле "Дата рождения" нажав клавишу Backspace
+        Application1Screen.ctrlABackSpaceById(birthDateField)
         //Assert: в поле не отображается никаких значений
-        //Application1Screen.isEmptyById(birthDateField)
-        //10. Снять фокус
-        //Application1Screen.clickNotClickableByXpath(application1Header)
+        Application1Screen.isEmptyById(birthDateField)
+        //10. Снять фокус. Проверка (ОБЯЗАТЕЛЬНОСТЬ ПОЛЯ)
+        Application1Screen.clickNotClickableByXpath(application1Header)
         //Assert: появилось сообщение об ошибке "Обязательное поле"
-        //Application1Screen.isTextVisibleByXpath(emptyFieldError, emptyFieldErrorText)
+        Application1Screen.isTextVisibleByXpath(emptyFieldError, emptyFieldErrorText)
+        //11. Ввести в поле "Дата рождения" значение, соответствующее возрасту младше минимально допустимого (МИНИМАЛЬНЫЙ ВОЗРАСТ)
+        Application1Screen.sendKeysById(birthDateField, notValidMinBirth)
+        //12.Снять фокус
+        Application1Screen.clickNotClickableByXpath(application1Header)
+        //Assert: появилось сообщение об ошибке "Вы должны быть старше 18 лет"
+        Application1Screen.isTextVisibleByXpath(minAgeError, minAgeErrorText)
+        //13. Ввести в поле "Дата рождения" значение, соответствующее возрасту старше максимально допустимого (МАКСИМАЛЬНЫЙ ВОЗРАСТ)
+        Application1Screen.sendKeysById(birthDateField, notValidMaxBirth)
+        //14.Снять фокус
+        Application1Screen.clickNotClickableByXpath(application1Header)
+        //Assert: появилось сообщение об ошибке "Вы должны быть не старше 100 лет"
+        Application1Screen.isTextVisibleByXpath(maxAgeError, maxAgeErrorText)
+
+                      //ОБРАБОТКА ПРОБЕЛОВ В ПОЛЕ "ОТЧЕСТВО"
         //17. Ввести в поле "Дата рождения" только пробелы (8 пробелов)
-        //Application1Screen.sendKeysById(nameField, notValid3Spaces)
+        Application1Screen.sendKeysById(birthDateField, notValid8Spaces)
+        Thread.sleep(3000)
         //18.Снять фокус
-        //Application1Screen.clickNotClickableByXpath(application1Header)
-        //Assert: появилось сообщение об ошибке "Некоректная дата"
-        // Application1Screen.isTextVisibleByXpath(notCorrectBirthError, notCorrectBirthErrorText)
-        //19. Ввести в поле "Дата рождения" значение: "Эй цирюльникъ ёжик выстриги дай" (31 символ)
-        //Application1Screen.sendKeysById(midNameField, notValid31Symbols)
+        Application1Screen.clickNotClickableByXpath(application1Header)
+        Thread.sleep(3000)
+        //Assert: появилось сообщение об ошибке "Некорректная дата"
+        Application1Screen.isTextVisibleByXpath(notCorrectBirthError, notCorrectBirthErrorText)
+
+                     //КОЛИЧЕСТВО СИМВОЛОВ\\
+        //19. Ввести в поле "Дата рождения" 9 символов ТУТ БАГА!!!
+        //Application1Screen.sendKeysById(birthDateField, notValid9Digits)
+        //Thread.sleep(3000)
+        //Application1Screen.hasEnteredTextById(birthDateField, notValid9Digits)
         //20.Снять фокус
         //Application1Screen.clickNotClickableByXpath(application1Header)
-        //Assert: появилось сообщение об ошибке "Число символов превышает максимальное"
-        //Application1Screen.isTextVisibleByXpath(symbQuantityError, symbQuantityErrorText)
-        //21. Нажать Backspace
-        //Application1Screen.pressBackSpaceById(midNameField)
-        //Assert: сообщение об ошибке "Число символов превышает максимальное" исчезло
-        //Application1Screen.disappearedByXpath(symbQuantityError)
-        //22. Очистить поле
-        //Application1Screen.clearFieldById(midNameField)
+        //Thread.sleep(3000)
+        //Assert: система принимает значение. Сообщений об ошибках не появляется
+        //Application1Screen.isNotVisibleByXpath(minAgeError)
+        //Application1Screen.isNotVisibleByXpath(maxAgeError)
+        //Application1Screen.isNotVisibleByXpath(notCorrectBirthError)
+        //21. Ввести в поле "Дата рождения" 7 символов ТУТ БАГА!!!
+        //Application1Screen.sendKeysById(birthDateField, notValid7Digits)
+        //22.Снять фокус
+        //Application1Screen.clickNotClickableByXpath(application1Header)
+        //Assert: появилось сообщение об ошибке "Некорректная дата"
+        //Application1Screen.isTextVisibleByXpath(notCorrectBirthError, notCorrectBirthErrorText)
+        //временная очистка поля
+        //Application1Screen.ctrlABackSpaceById(birthDateField)
 
-        //ОБРАБОТКА ПРОБЕЛОВ В ПОЛЕ "ОТЧЕСТВО"
-        //23. Ввести в поле "Отчество" значение с пробелом в начале: " Евлампий"
-        //28. Снять фокус
-        //Assert: Пробел удалился из поля.
-        //Assert: В поле отображается только значение "Евлампий" без пробелов
-        //29. Ввести в поле "Отчество" значение с пробелом в конце: "Евлампий "
+
+                 //\\НЕДОПУСТИМЫЕ СИМВОЛЫ В ПОЛЕ ОТЧЕСТВО//\\ ВКЛЮЧАТЬ КОГДА ИСПРАВЯТ БАГИ В ТЕСТИНГЕ
+        //23. Ввести в поле "Дата рождения" БУКВЫ ЛАТИНИЦЫ
+        //Application1Screen.sendKeysById(birthDateField, latinSymbols)
+        //assert: Символы не отображаются в поле
+        //Application1Screen.isEmptyById(birthDateField)
+        //24. Снять фокус
+        //Application1Screen.clickNotClickableByXpath(application1Header)
+        //Assert: поле подсветилось красным
+        //Assert: под полем появилось сообщение: "Обязательное поле"
+        //Application1Screen.isTextVisibleByXpath(emptyFieldError, emptyFieldErrorText)
+        //25. Очистить поле
+        //Application1Screen.ctrlABackSpaceById(birthDateField)
+        //26. Ввести в поле "Дата рождения" БУКВЫ КИРИЛЛИЦЫ (фя)
+        //Application1Screen.sendKeysById(birthDateField, valid2Symbols)
+        //assert: Символы не отображаются в поле
+        //Application1Screen.isEmptyById(birthDateField)
+        //27. Снять фокус
+        //Application1Screen.clickNotClickableByXpath(application1Header)
+        //Assert: поле подсветилось красным
+        //Assert: под полем появилось сообщение: "Обязательное поле"
+        //Application1Screen.isTextVisibleByXpath(emptyFieldError, emptyFieldErrorText)
+        //28. Очистить поле
+        //Application1Screen.ctrlABackSpaceById(birthDateField)
+        //29. Ввести в поле "Дата рождения" СПЕЦСИМВОЛЫ (!@#$%^&*()_+=}["'|\</?№#;,.:~`)
+        //Application1Screen.sendKeysById(birthDateField, specSymbols)
+        //assert: Символы не отображаются в поле
+        //Application1Screen.isEmptyById(birthDateField)
         //30. Снять фокус
-        //Assert: Пробел удалился из поля.
-        //Assert: В поле отображается только значение "Евлампий" без пробелов
-        //31. Выделить значение в поле двойным кликом
-        //32. Нажать Backspace
-        //Assert: в поле не отображается никаких значений
+        //Application1Screen.clickNotClickableByXpath(application1Header)
+        //Assert: поле подсветилось красным
+        //Assert: под полем появилось сообщение: "Обязательное поле"
+        //Application1Screen.isTextVisibleByXpath(emptyFieldError, emptyFieldErrorText)
+        //31. Очистить поле
+        //Application1Screen.ctrlABackSpaceById(birthDateField)
 
-        //\\НЕДОПУСТИМЫЕ СИМВОЛЫ В ПОЛЕ ОТЧЕСТВО//\\
-        //37. Ввести в поле "Отчество" значение: "Brick quiz whangs jumpy veldt"
-        //Application1Screen.sendKeysById(midNameField, latinSymbols)
-        //38. Снять фокус
-        //Application1Screen.clickNotClickableByXpath(application1Header)
-        //Assert: поле подсветилось красным
-        //Assert: под полем появилось сообщение: "Введите фамилию кириллицей"
-        //Application1Screen.isTextVisibleByXpath(cyrillicMidNameError, cyrillicMidNameErrorText)
-        //39. Очистить поле
-        //Application1Screen.clearFieldById(midNameField)
-        //Assert: в поле не отображается никаких значений
-        //Application1Screen.isEmptyById(midNameField)
-        //41. Ввести в поле "Отчество" значение: "!@#$%^&*()_+=}["'|\</?№#;,.:~`"
-        //Application1Screen.sendKeysById(midNameField, specSymbols)
-        //42. Снять фокус
-        //Application1Screen.clickNotClickableByXpath(application1Header)
-        //Assert: поле подсветилось красным
-        //Assert: под полем появилось сообщение: "Введите отчество кириллицей"
-        //Application1Screen.isTextVisibleByXpath(cyrillicMidNameError, cyrillicMidNameErrorText)
-        //43. Очистить поле
-        //Application1Screen.clearFieldById(midNameField)
-        //Assert: в поле не отображается никаких значений
-        //Application1Screen.isEmptyById(midNameField)
-        //45. Ввести в поле "Отчество" китайские иероглифы значение: "幸福"
-        //Application1Screen.sendKeysById(midNameField, chineseSymbols)
-        //46. Снять фокус
-        //Application1Screen.clickNotClickableByXpath(application1Header)
-        //Assert: под полем появилось сообщение: "Введите отчество кириллицей"
-        //Application1Screen.isTextVisibleByXpath(cyrillicMidNameError, cyrillicMidNameErrorText)
-        //47. Выделить введенное значение двойным кликом
-        //Application1Screen.doubleClickById(midNameField)
-        //48. Нажать BackSpace
-        //Application1Screen.pressBackSpaceById(midNameField)
-        //Assert: в поле не отображается никаких значений
-        //Application1Screen.isEmptyById(midNameField)
-        //49. Ввести в поле "Отчество" значение: "1234567890"
-        //Application1Screen.sendKeysById(midNameField, digitalSymbols)
-        //50. Снять фокус
-        //Application1Screen.clickNotClickableByXpath(application1Header)
-        //Assert: поле подсветилось красным
-        //Assert: под полем появилось сообщение: "Введите отчество кириллицей"
-        //Application1Screen.isTextVisibleByXpath(cyrillicMidNameError, cyrillicMidNameErrorText)
+
+
 
     }
 

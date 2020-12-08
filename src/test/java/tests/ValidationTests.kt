@@ -61,7 +61,7 @@ class ValidationTests: DriverSettings()  {
 
     @Before
     fun setUp() {
-        open("http://185.141.227.202")
+        open("")
         //close();
         //Configuration.baseUrl = "http://185.141.227.202";
         //Configuration.proxyEnabled = true;

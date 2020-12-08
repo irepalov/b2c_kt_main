@@ -63,7 +63,7 @@ class ValidationTests: DriverSettings()  {
     fun setUp() {
         open("")
         //close();
-        //Configuration.baseUrl = "http://185.141.227.202";
+        //Configuration.baseUrl = "";
         //Configuration.proxyEnabled = true;
         //Configuration.fileDownload = PROXY;
         //Configuration.reportsFolder = "/Users/Ivan/Desktop/webSelenideReports";
